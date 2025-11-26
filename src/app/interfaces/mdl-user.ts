@@ -7,22 +7,22 @@ export interface MdlUser {
   email: string;
   department?: string;
   firstaccess?: number;
-  lastaccess: number;
-  auth: string;
-  suspended: boolean;
-  confirmed: boolean;
-  lang: string;
-  theme: string;
-  timezone: string;
-  mailformat: number;
-  trackforums: number;
-  description: string;
-  descriptionformat: number;
-  country: string;
-  profileimageurlsmall: string;
-  profileimageurl: string;
-  customfields: Customfield[];
-  preferences: Preference[];
+  lastaccess?: number;
+  auth?: string;
+  suspended?: boolean;
+  confirmed?: boolean;
+  lang?: string;
+  theme?: string;
+  timezone?: string;
+  mailformat?: number;
+  trackforums?: number;
+  description?: string;
+  descriptionformat?: number;
+  country?: string;
+  profileimageurlsmall?: string;
+  profileimageurl?: string;
+  customfields?: Customfield[];
+  preferences?: Preference[];
 }
 
 interface Preference {

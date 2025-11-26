@@ -27,6 +27,9 @@ import { environment } from '../../../environments/environment.development';
 export class UpdateUser implements OnInit {
   private fb = inject(FormBuilder);
   private ouService = inject(OrgUnitsService); // Inject the new service
+  private mdlService = inject(MdlServicesService);
+  private usersService = inject(Users);
+
   API_URL = environment.backendApiUrl;
   // Signal derived from API Observable using toSignal
   // It tracks data, loading, and error states.
@@ -66,10 +69,38 @@ export class UpdateUser implements OnInit {
 
   constructor() {
     this.ouForm = this.fb.group({
-      level2: ['', [Validators.required]],
-      level3: [{ value: '', disabled: true }],
-      level4: [{ value: '', disabled: true }],
-      level5: [{ value: '', disabled: true }],
+      level2: [
+        {
+          value: this.usersService
+            .currentUser()
+            ?.customfields?.filter((el) => el.shortname === 'region')[0]?.displayvalue,
+        },
+        Validators.required,
+      ],
+      level3: [
+        {
+          value: this.usersService
+            .currentUser()
+            ?.customfields?.filter((el) => el.shortname === 'district'),
+          disabled: true,
+        },
+      ],
+      level4: [
+        {
+          value: this.usersService
+            .currentUser()
+            ?.customfields?.filter((el) => el.shortname === 'commune'),
+          disabled: true,
+        },
+      ],
+      level5: [
+        {
+          value: this.usersService
+            .currentUser()
+            ?.customfields?.filter((el) => el.shortname === 'fs'),
+          disabled: true,
+        },
+      ],
     });
 
     // 4. Effects for Cascading Logic (Enable/Disable/Reset) - Logic remains the same
@@ -117,6 +148,11 @@ export class UpdateUser implements OnInit {
         l5Control?.setValue('', { emitEvent: false });
       }
     });
+
+    console.log(
+      'Curr region: ',
+      this.usersService.currentUser()?.customfields?.filter((el) => el.shortname === 'region')
+    );
   }
 
   // 5. ngOnInit to connect Form Value Changes to Selection Signals - Logic remains the same

@@ -64,4 +64,7 @@ export class HomeCheck {
       );
     }
   }
+  openUpdatePage() {
+    this.router.navigate(['/update']);
+  }
 }

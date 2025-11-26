@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-100 p-4 sm:p-8">
   <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-10">
-    <h1 class="h2 mb-2">Mise à jour de votre profile</h1>
+    <h1 class="h2 mb-2">Mise à jour de votre compte</h1>
     <hr />
     <!-- Loading and Error States -->
     @if (orgUnitState().loading) {
@@ -14,7 +14,8 @@
       >
         <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9V6h2v3h-2zm0 2h2v4h-2v-4z" />
       </svg>
-      <span class="font-medium">Loading...</span> Attempting to fetch organisation unit data.
+      <span class="font-medium">Chargement en cours...</span> Chargement des unités
+      organisationnelles.
     </div>
     } @else if (orgUnitState().error) {
     <div
@@ -33,189 +34,194 @@
       <span class="font-medium">Connection Warning:</span> {{ orgUnitState().error }}
     </div>
     }
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">Zone géographique</h3>
 
     <form [formGroup]="ouForm" class="mb-3" [class.opacity-50]="orgUnitState().loading">
-      <!-- Level 2 Selector -->
-      <div i class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-            Région
-          </label>
+      <div>
+        <div class="pt-6 border-t mt-8">
+          <h3 class="text-lg font-semibold text-gray-800 mb-3">Profile personnel</h3>
         </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
-          <select
-            id="level2"
-            formControlName="level2"
-            class="custom-select"
-            [class.bg-gray-50]="level2Options().length === 0"
-            [disabled]="
-              !!(orgUnitState().loading || (orgUnitState().error && level2Options().length === 0))
-            "
-          >
-            <option value="" disabled selected>Sélectionner votre région</option>
-            @for (unit of level2Options(); track unit.id) {
-            <option [value]="unit.id">{{ unit.name }}</option>
-            } @empty {
-            <option disabled>Aucune données trouvées</option>
+        <div id="fitem_id_username" class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_username_label" class="d-inline word-break" for="id_username">
+              Nom d'utilisateur
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              id="id_username"
+              value=""
+              size="20"
+            />
+            <div class="form-control-feedback invalid-feedback" id="id_error_username"></div>
+          </div>
+        </div>
+        <div id="fitem_id_firstname" class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_firstname_label" class="d-inline word-break" for="id_firstname">
+              Prénom
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
+            <input
+              type="text"
+              class="form-control"
+              name="firstname"
+              id="id_firstname"
+              value=""
+              size="30"
+              aria-required="true"
+              maxlength="100"
+            />
+            <div class="form-control-feedback invalid-feedback" id="id_error_firstname"></div>
+          </div>
+        </div>
+        <div id="fitem_id_lastname" class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_lastname_label" class="d-inline word-break" for="id_lastname">
+              Nom de famille
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
+            <input
+              type="text"
+              class="form-control"
+              name="lastname"
+              id="id_lastname"
+              value=""
+              size="30"
+              aria-required="true"
+              maxlength="100"
+            />
+            <div class="form-control-feedback invalid-feedback" id="id_error_lastname"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="pt-6 border-t mt-8">
+          <h3 class="text-lg font-semibold text-gray-800 mb-3">Zone géographique</h3>
+        </div>
+        <!-- Level 2 Selector -->
+        <div i class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
+              Région
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
+            <select
+              id="level2"
+              formControlName="level2"
+              class="custom-select"
+              [class.bg-gray-50]="level2Options().length === 0"
+              [disabled]="
+                !!(orgUnitState().loading || (orgUnitState().error && level2Options().length === 0))
+              "
+            >
+              <option value="" disabled selected>Sélectionner votre région</option>
+              @for (unit of level2Options(); track unit.id) {
+              <option [value]="unit.id">{{ unit.name }}</option>
+              } @empty {
+              <option disabled>Aucune données trouvées</option>
+              }
+            </select>
+            @if (ouForm.get('level2')?.touched && ouForm.get('level2')?.invalid) {
+            <p class="mt-1 text-sm invalid-feedback">Veuillez sélectionner votre région.</p>
             }
-          </select>
-          @if (ouForm.get('level2')?.touched && ouForm.get('level2')?.invalid) {
-          <p class="mt-1 text-sm invalid-feedback">Veuillez sélectionner votre région.</p>
-          }
-        </div>
-      </div>
-
-      <!-- Level 3 Selector (Rest of the template remains the same, enabling cascading functionality) -->
-      <div i class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-            District
-          </label>
+          </div>
         </div>
 
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
-          <select
-            id="level3"
-            formControlName="level3"
-            class="custom-select"
-            [class.bg-gray-100]="ouForm.get('level3')?.disabled"
-            [disabled]="!!(ouForm.get('level3')?.disabled || orgUnitState().loading)"
-          >
-            <option value="" disabled selected>Sélectionner votre district</option>
-            @for (unit of level3Options(); track unit.id) {
-            <option [value]="unit.id">{{ unit.name }}</option>
-            } @empty {
-            <option disabled>
-              @if (ouForm.get('level2')?.value) { Aucun district trouvé pour la sélection:
-              {{ ouForm.get('level2')?.value }}
-              } @else { Veuillez choisir une région en premier. }
-            </option>
-            }
-          </select>
-        </div>
-      </div>
+        <!-- Level 3 Selector (Rest of the template remains the same, enabling cascading functionality) -->
+        <div i class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
+              District
+            </label>
+          </div>
 
-      <!-- Level 4 Selector -->
-      <div i class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-            Commune
-          </label>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
+            <select
+              id="level3"
+              formControlName="level3"
+              class="custom-select"
+              [class.bg-gray-100]="ouForm.get('level3')?.disabled"
+              [disabled]="!!(ouForm.get('level3')?.disabled || orgUnitState().loading)"
+            >
+              <option value="" disabled selected>Sélectionner votre district</option>
+              @for (unit of level3Options(); track unit.id) {
+              <option [value]="unit.id">{{ unit.name }}</option>
+              } @empty {
+              <option disabled>
+                @if (ouForm.get('level2')?.value) { Aucun district trouvé pour la sélection:
+                {{ ouForm.get('level2')?.value }}
+                } @else { Veuillez choisir une région en premier. }
+              </option>
+              }
+            </select>
+          </div>
         </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
-          <select
-            id="level4"
-            formControlName="level4"
-            class="custom-select"
-            [class.bg-gray-100]="ouForm.get('level4')?.disabled"
-            [disabled]="!!(ouForm.get('level4')?.disabled || orgUnitState().loading)"
-          >
-            <option value="" disabled selected>Sélectionner votre commune</option>
-            @for (unit of level4Options(); track unit.id) {
-            <option [value]="unit.id">{{ unit.name }}</option>
-            } @empty {
-            <option disabled>
-              @if (ouForm.get('level3')?.value) { Pas de commune trouvée pour la sélection:
-              {{ ouForm.get('level3')?.value }}
-              } @else { Veuillez choisir un district en premier. }
-            </option>
-            }
-          </select>
-        </div>
-      </div>
 
-      <!-- Level 5 Selector -->
-      <div i class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-            Formation sanitaire
-          </label>
+        <!-- Level 4 Selector -->
+        <div i class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
+              Commune
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
+            <select
+              id="level4"
+              formControlName="level4"
+              class="custom-select"
+              [class.bg-gray-100]="ouForm.get('level4')?.disabled"
+              [disabled]="!!(ouForm.get('level4')?.disabled || orgUnitState().loading)"
+            >
+              <option value="" disabled selected>Sélectionner votre commune</option>
+              @for (unit of level4Options(); track unit.id) {
+              <option [value]="unit.id">{{ unit.name }}</option>
+              } @empty {
+              <option disabled>
+                @if (ouForm.get('level3')?.value) { Pas de commune trouvée pour la sélection:
+                {{ ouForm.get('level3')?.value }}
+                } @else { Veuillez choisir un district en premier. }
+              </option>
+              }
+            </select>
+          </div>
         </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
-          <select
-            id="level5"
-            formControlName="level5"
-            class="custom-select"
-            [class.bg-gray-100]="ouForm.get('level5')?.disabled"
-            [disabled]="!!(ouForm.get('level5')?.disabled || orgUnitState().loading)"
-          >
-            <option value="" disabled selected>Sélectionner votre formation sanitaire</option>
-            @for (unit of level5Options(); track unit.id) {
-            <option [value]="unit.id">{{ unit.name }}</option>
-            } @empty {
-            <option disabled>
-              @if (ouForm.get('level4')?.value) { Aucune formation sanitaire trouvée pour la
-              sélection:
-              {{ ouForm.get('level4')?.value }}
-              } @else {Veuillez choisir une commune en premier. }
-            </option>
-            }
-          </select>
-        </div>
-      </div>
-      <div class="pt-6 border-t mt-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-3">Profile personnel</h3>
-      </div>
-      <div id="fitem_id_username" class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_username_label" class="d-inline word-break" for="id_username">
-            Nom d'utilisateur
-          </label>
-        </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            id="id_username"
-            value=""
-            size="20"
-          />
-          <div class="form-control-feedback invalid-feedback" id="id_error_username"></div>
-        </div>
-      </div>
-      <div id="fitem_id_firstname" class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_firstname_label" class="d-inline word-break" for="id_firstname">
-            Prénom
-          </label>
-        </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
-          <input
-            type="text"
-            class="form-control"
-            name="firstname"
-            id="id_firstname"
-            value=""
-            size="30"
-            aria-required="true"
-            maxlength="100"
-          />
-          <div class="form-control-feedback invalid-feedback" id="id_error_firstname"></div>
-        </div>
-      </div>
-      <div id="fitem_id_lastname" class="mb-3 row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-          <label id="id_lastname_label" class="d-inline word-break" for="id_lastname">
-            Nom de famille
-          </label>
-        </div>
-        <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
-          <input
-            type="text"
-            class="form-control"
-            name="lastname"
-            id="id_lastname"
-            value=""
-            size="30"
-            aria-required="true"
-            maxlength="100"
-          />
-          <div class="form-control-feedback invalid-feedback" id="id_error_lastname"></div>
-        </div>
-      </div>
 
+        <!-- Level 5 Selector -->
+        <div i class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
+              Formation sanitaire
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
+            <select
+              id="level5"
+              formControlName="level5"
+              class="custom-select"
+              [class.bg-gray-100]="ouForm.get('level5')?.disabled"
+              [disabled]="!!(ouForm.get('level5')?.disabled || orgUnitState().loading)"
+            >
+              <option value="" disabled selected>Sélectionner votre formation sanitaire</option>
+              @for (unit of level5Options(); track unit.id) {
+              <option [value]="unit.id">{{ unit.name }}</option>
+              } @empty {
+              <option disabled>
+                @if (ouForm.get('level4')?.value) { Aucune formation sanitaire trouvée pour la
+                sélection:
+                {{ ouForm.get('level4')?.value }}
+                } @else {Veuillez choisir une commune en premier. }
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="pt-6 border-t mt-8">
         <h3 class="text-lg font-semibold text-gray-800 mb-3">Current Selections</h3>
         <pre class="bg-gray-50 p-4 rounded-lg text-sm whitespace-pre-wrap">{{
