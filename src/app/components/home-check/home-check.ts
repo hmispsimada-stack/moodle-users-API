@@ -54,9 +54,9 @@ export class HomeCheck {
       // Example usage of mdlService to get user by email
       this.mdlService.getUserByEmail(this.email).subscribe(
         (response) => {
-          console.log('User data:', response.users[0]);
-          this.usersService.setUser(response.users[0]);
-          this.userData = response.users[0];
+          console.log('User data:', response?.users[0]);
+          this.usersService.setUser(response?.users[0]);
+          this.userData = response?.users[0];
         },
         (error) => {
           console.error('Error fetching user data:', error);

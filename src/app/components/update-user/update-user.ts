@@ -141,26 +141,44 @@ export class UpdateUser implements OnInit {
       }
     });
 
+    // Get initial values from the user
     effect(() => {
       const userRegionId = this.usersService
         .currentUser()
         ?.customfields?.find((cf) => cf.shortname === 'Region')
         ?.value.split('-')[0];
-      console.log('User Region ID: ', userRegionId);
-      this.userInitRegionId = userRegionId;
 
-      this.userInitRegion = this.allUnits().find((unit) => unit.id === userRegionId)?.name;
+      if (userRegionId) {
+        console.log('User Region ID: ', userRegionId);
 
-      const userDistrict = this.usersService
+        this.userInitRegion = this.allUnits().find((unit) => unit.id === userRegionId)?.name;
+
+        // Initialize form controls once data is available
+        this.ouForm.get('level2')?.setValue(userRegionId, { emitEvent: false });
+        this.level2SelectionId.set(userRegionId);
+      }
+
+      const userDistrictId = this.usersService
         .currentUser()
         ?.customfields?.find((cf) => cf.shortname === 'District')?.value;
-      console.log('Current init region: ', this.userInitRegion);
-      console.log('Curr district: ', userDistrict);
+      if (userDistrictId) {
+        console.log('User District ID: ', userDistrictId);
+
+        this.userInitRegion = this.allUnits().find((unit) => unit.id === userDistrictId)?.name;
+
+        // Initialize form controls once data is available
+        this.ouForm.get('level3')?.setValue(userDistrictId, { emitEvent: false });
+        this.level2SelectionId.set(userDistrictId);
+      }
     });
   }
 
   // 5. ngOnInit to connect Form Value Changes to Selection Signals - Logic remains the same
   ngOnInit(): void {
+    if (this.userInitRegionId) {
+      this.ouForm.get('level2')?.setValue(this.userInitRegionId, { emitEvent: false });
+      this.level2SelectionId.set(this.userInitRegionId);
+    }
     // L2 -> L3 Filter Driver
     this.ouForm.get('level2')?.valueChanges.subscribe((id) => {
       this.level2SelectionId.set(id);
