@@ -7,6 +7,7 @@ import {
   effect,
   OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Users } from '../../shared/users';
 import { MdlUser } from '../../interfaces/mdl-user';
 import { MdlServicesService } from '../../services/mdl-services.service';
@@ -19,7 +20,7 @@ import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-update-user',
-  imports: [ReactiveFormsModule, JsonPipe, MatAutocompleteModule], // <-- Added JsonPipe here
+  imports: [ReactiveFormsModule, MatAutocompleteModule], // <-- Added JsonPipe here
   templateUrl: './update-user.html',
   styleUrl: './update-user.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +30,7 @@ export class UpdateUser implements OnInit {
   private ouService = inject(OrgUnitsService); // Inject the new service
   private mdlService = inject(MdlServicesService);
   private usersService = inject(Users);
+  private router = inject(Router);
   userRegion: string | null | undefined = '';
   userInitRegionId: string | null | undefined = '';
   userDistrict: string | null | undefined = '';
@@ -291,5 +293,6 @@ export class UpdateUser implements OnInit {
           console.error('Error updating last name:', error);
         }
       );
+    // window.location.href = 'https://formation-pev.com/moodle/login/index.php';
   }
 }

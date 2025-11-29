@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { OrganisationUnit, OrgUnitState } from '../interfaces/ou.interface';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

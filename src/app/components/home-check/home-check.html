@@ -1,16 +1,36 @@
 <div id="page" class="container-fluid mt-0">
-  <h2>Status de validation de votre adresse email</h2>
+  <h2>Bonjour {{ userData?.firstname }}</h2>
   @if(email) {
   <p>Email: {{ email }}</p>
   <p *ngIf="isValid; else invalidEmail" style="color: green">Cet email est valide</p>
   <ng-template #invalidEmail>
-    <p style="color: red">This email address is **invalid**. Please enter a valid format.</p>
+    <p style="color: red">Cet adresse email est **invalide**. Veuillez entrer le bon format.</p>
   </ng-template>
-  }
-  <div *ngIf="!email">
-    <p>Please provide an email address to check its validity.</p>
+  } @else {
+  <div>
+    <p>
+      Veuillez fournir l'adresse email que vous avez précédemment utilisé dans la plateforme de
+      formation.
+    </p>
+    <form (ngSubmit)="checkEmail()">
+      <div class="mb-3 fitem">
+        <label for="emailInput" class="form-label requiredField">Adresse email</label>
+        <input
+          type="email"
+          id="emailInput"
+          name="email"
+          class="form-control"
+          [formControl]="emailControl"
+          required
+        />
+      </div>
+      <div class="mb-3 fitem">
+        <input type="submit" class="btn btn-primary" value="Vérifier l'email" />
+      </div>
+    </form>
   </div>
-  <h3>Email Approval Status</h3>
+  } @if(isValidating) {
+  <h3>Status de votre adresse email</h3>
   @if(userData != undefined) {
   <p *ngIf="userData.confirmed === true; else suspendedUser" style="color: green">
     Votre email est approuvé dans le système.
@@ -25,8 +45,7 @@
     plateforme.
   </p>
 
-  }
-
+  } } @if(userData != undefined) {
   <div class="mb-3 fitem">
     <input
       type="button"
@@ -37,4 +56,5 @@
 
     <div class="form-control-feedback invalid-feedback" id="id_error_submitbutton"></div>
   </div>
+  }
 </div>

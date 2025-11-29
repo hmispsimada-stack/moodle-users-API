@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MdlServicesService } from '../../services/mdl-services.service';
 import { MdlUser } from '../../interfaces/mdl-user';
@@ -8,15 +8,16 @@ import { Users } from '../../shared/users';
 
 @Component({
   selector: 'app-home-check',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './home-check.html',
   styleUrl: './home-check.css',
 })
 export class HomeCheck {
   email: string | null = null;
   isValid: boolean = false;
+  isValidating: boolean = false;
   // Use a FormControl for easy validation
-  emailControl = new FormControl('');
+  emailControl = new FormControl('', Validators.email);
   userData!: MdlUser;
 
   constructor(
@@ -52,19 +53,32 @@ export class HomeCheck {
     });
     if (this.email && this.isValid) {
       // Example usage of mdlService to get user by email
-      this.mdlService.getUserByEmail(this.email).subscribe(
-        (response) => {
-          console.log('User data:', response?.users[0]);
-          this.usersService.setUser(response?.users[0]);
-          this.userData = response?.users[0];
-        },
-        (error) => {
-          console.error('Error fetching user data:', error);
-        }
-      );
+      this.checkEmail();
     }
   }
   openUpdatePage() {
     this.router.navigate(['/update']);
+  }
+
+  checkEmail() {
+    if (!this.emailControl.valid || !this.emailControl.value) {
+      console.error('Email is invalid or empty');
+      this.isValid = false;
+      return;
+    }
+    const email = this.emailControl.value;
+    this.email = email;
+    this.isValid = true;
+    this.mdlService.getUserByEmail(email).subscribe(
+      (response) => {
+        console.log('User data:', response?.users[0]);
+        this.usersService.setUser(response?.users[0]);
+        this.userData = response?.users[0];
+      },
+      (error) => {
+        console.error('Error fetching user data:', error);
+      }
+    );
+    this.isValidating = true;
   }
 }
