@@ -1,0 +1,41 @@
+<div id="page" class="container-fluid mt-0">
+  <h2>
+    Merci @if(userData != undefined) {
+    {{ userData.firstname }}
+    }!
+  </h2>
+  <hr />
+  <p>Votre profile a été mise à jour avec succès.</p>
+  <h4>Voulez vous poursuivre les formations ?</h4>
+  <p>Cliquer sur "Oui" pour vous connecter à la plateforme et poursuivre les formations.</p>
+  <p>Cliquer sur "Non" si vous voulez encore mettre à jour votre profile.</p>
+  <div class="d-flex flex-wrap align-items-center">
+    <div class="mb-3 fitem btn-cancel">
+      <span data-fieldtype="submit">
+        <input
+          type="submit"
+          class="btn btn-secondary"
+          value="Oui"
+          data-skip-validation="1"
+          data-cancel="1"
+          (click)="goToMoodle()"
+        />
+      </span>
+      <div class="form-control-feedback invalid-feedback" id="id_error_cancel"></div>
+    </div>
+
+    <div class="mb-3 fitem">
+      <span data-fieldtype="submit">
+        <input
+          type="submit"
+          class="btn btn-primary"
+          name="submitbutton"
+          id="id_submitbutton"
+          value="Non"
+          (click)="updateProfile()"
+        />
+      </span>
+      <div class="form-control-feedback invalid-feedback" id="id_error_submitbutton"></div>
+    </div>
+  </div>
+</div>

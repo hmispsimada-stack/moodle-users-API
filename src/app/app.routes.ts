@@ -5,19 +5,15 @@ import { UpdateUser } from './components/update-user/update-user';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full',
-  },
-  {
-    path: 'home',
     component: HomeCheck,
   },
-  {
-    path: 'home/:email',
-    component: HomeCheck,
-  },
+
   {
     path: 'update',
     component: UpdateUser,
+  },
+  {
+    path: 'redirc',
+    loadComponent: () => import('./components/redirc/redirc').then((m) => m.Redirc),
   },
 ];

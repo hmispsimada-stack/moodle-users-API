@@ -137,9 +137,6 @@
               formControlName="level2"
               class="custom-select"
               [class.bg-gray-50]="level2Options().length === 0"
-              [disabled]="
-                !!(orgUnitState().loading || (orgUnitState().error && level2Options().length === 0))
-              "
             >
               <option value="" disabled selected>Sélectionner votre région</option>
               @for (unit of level2Options(); track unit.id) {
@@ -168,7 +165,6 @@
               formControlName="level3"
               class="custom-select"
               [class.bg-gray-100]="ouForm.get('level3')?.disabled"
-              [disabled]="!!(ouForm.get('level3')?.disabled || orgUnitState().loading)"
             >
               <option value="" disabled selected>Sélectionner votre district</option>
               @for (unit of level3Options(); track unit.id) {
@@ -197,7 +193,6 @@
               formControlName="level4"
               class="custom-select"
               [class.bg-gray-100]="ouForm.get('level4')?.disabled"
-              [disabled]="!!(ouForm.get('level4')?.disabled || orgUnitState().loading)"
             >
               <option value="" disabled selected>Sélectionner votre commune</option>
               @for (unit of level4Options(); track unit.id) {
@@ -226,7 +221,6 @@
               formControlName="level5"
               class="custom-select"
               [class.bg-gray-100]="ouForm.get('level5')?.disabled"
-              [disabled]="!!(ouForm.get('level5')?.disabled || orgUnitState().loading)"
             >
               <option value="" disabled selected>Sélectionner votre formation sanitaire</option>
               @for (unit of level5Options(); track unit.id) {

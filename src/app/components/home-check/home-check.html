@@ -1,5 +1,10 @@
 <div id="page" class="container-fluid mt-0">
-  <h2>Bonjour {{ userData?.firstname }}</h2>
+  <h2>
+    Bonjour @if(userData != undefined) {
+    {{ userData.firstname }}
+    }
+  </h2>
+  <hr />
   @if(email) {
   <p>Email: {{ email }}</p>
   <p *ngIf="isValid; else invalidEmail" style="color: green">Cet email est valide</p>
@@ -8,6 +13,8 @@
   </ng-template>
   } @else {
   <div>
+    <h4>Bienvenue sur la plateforme eLearning de la DPEV</h4>
+    <p>Avant de continuer, nous vous prions de mettre à jour votre profile utilisateur.</p>
     <p>
       Veuillez fournir l'adresse email que vous avez précédemment utilisé dans la plateforme de
       formation.
@@ -33,7 +40,7 @@
   <h3>Status de votre adresse email</h3>
   @if(userData != undefined) {
   <p *ngIf="userData.confirmed === true; else suspendedUser" style="color: green">
-    Votre email est approuvé dans le système.
+    Votre email est approuvé dans le système. Vous pouvez continuer à mettre à jour votre profil.
   </p>
   <ng-template #suspendedUser>
     <p style="color: red">Votre compte n'est pas approuvé</p>

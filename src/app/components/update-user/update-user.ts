@@ -293,6 +293,6 @@ export class UpdateUser implements OnInit {
           console.error('Error updating last name:', error);
         }
       );
-    // window.location.href = 'https://formation-pev.com/moodle/login/index.php';
+    this.router.navigate(['/redirc']);
   }
 }
