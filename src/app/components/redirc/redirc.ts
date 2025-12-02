@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Users } from '../../shared/users';
 
+import { MdlServicesService } from '../../services/mdl-services.service';
+
 @Component({
   selector: 'app-redirc',
   imports: [],
@@ -9,11 +11,21 @@ import { Users } from '../../shared/users';
   styleUrl: './redirc.css',
 })
 export class Redirc {
-  userData = inject(Users).currentUser();
+  user = inject(Users);
+  userData = this.user.currentUser();
   router = inject(Router);
+  mdlService = inject(MdlServicesService);
 
   updateProfile() {
-    this.router.navigate(['/update']);
+    this.mdlService.getUserByEmail(this.user.currentUser()!.email).subscribe({
+      next: (response) => {
+        this.user.setUser(response.users[0]);
+        this.router.navigate(['/update']);
+      },
+      error: (error) => {
+        console.error('Error fetching user data:', error);
+      },
+    });
   }
 
   goToMoodle() {

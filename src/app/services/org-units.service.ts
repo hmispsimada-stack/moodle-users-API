@@ -15,7 +15,7 @@ export class OrgUnitsService {
   getOrganisationUnits(): Observable<OrgUnitState> {
     return this.http.get<OrganisationUnit[]>(this.API_URL).pipe(
       // On successful fetch
-      tap(() => console.log(`Successfully fetched data from: ${this.API_URL}`)),
+      tap(() => console.log(`Successfully fetched data`)),
       map((data) => ({ data, loading: false, error: null })),
       // On error
       catchError((error: HttpErrorResponse) => {

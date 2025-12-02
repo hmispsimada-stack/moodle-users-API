@@ -71,7 +71,6 @@ export class HomeCheck {
     this.isValid = true;
     this.mdlService.getUserByEmail(email).subscribe(
       (response) => {
-        console.log('User data:', response?.users[0]);
         this.usersService.setUser(response?.users[0]);
         this.userData = response?.users[0];
       },

@@ -33,8 +33,7 @@
       </svg>
       <span class="font-medium">Connection Warning:</span> {{ orgUnitState().error }}
     </div>
-    }
-
+    } @if(orgUnitState().loading === false && orgUnitState().error === null) {
     <form [formGroup]="ouForm" class="mb-3" [class.opacity-50]="orgUnitState().loading">
       <div>
         <div class="pt-6 border-t mt-8">
@@ -69,6 +68,7 @@
             <input
               type="text"
               class="form-control"
+              [class.is-invalid]="ouForm.get('name')?.invalid && ouForm.get('name')?.touched"
               formControlName="name"
               id="id_firstname"
               value=""
@@ -76,7 +76,11 @@
               aria-required="true"
               maxlength="100"
             />
-            <div class="form-control-feedback invalid-feedback" id="id_error_firstname"></div>
+            @if(ouForm.get('name')?.invalid && ouForm.get('name')?.touched){
+            <div class="form-control-feedback invalid-feedback" id="id_error_firstname">
+              Votre prénom est requis et doit contenir au moins 2 caractères et sans ponctuation.
+            </div>
+            }
           </div>
         </div>
         <div id="fitem_id_lastname" class="mb-3 row fitem">
@@ -89,6 +93,9 @@
             <input
               type="text"
               class="form-control"
+              [class.is-invalid]="
+                ouForm.get('familyName')?.invalid && ouForm.get('familyName')?.touched
+              "
               formControlName="familyName"
               id="id_lastname"
               value=""
@@ -96,10 +103,15 @@
               aria-required="true"
               maxlength="100"
             />
-            <div class="form-control-feedback invalid-feedback" id="id_error_lastname"></div>
+            @if(ouForm.get('familyName')?.invalid && ouForm.get('familyName')?.touched){
+            <div class="form-control-feedback invalid-feedback">
+              Votre nom de famille est requis et doit contenir au moins 2 caractères et sans
+              ponctuation.
+            </div>
+            }
           </div>
         </div>
-        <div id="fitem_id_lastname" class="mb-3 row fitem">
+        <div class="mb-3 row fitem">
           <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
             <label id="id_lastname_label" class="d-inline word-break" for="id_lastname">
               Fonction/Poste
@@ -109,6 +121,7 @@
             <input
               type="text"
               class="form-control"
+              [class.is-invalid]="ouForm.get('poste')?.invalid && ouForm.get('poste')?.touched"
               formControlName="poste"
               id="id_lastname"
               value=""
@@ -116,7 +129,40 @@
               aria-required="true"
               maxlength="100"
             />
-            <div class="form-control-feedback invalid-feedback" id="id_error_lastname"></div>
+            @if(ouForm.get('poste')?.invalid && ouForm.get('poste')?.touched){
+            <div class="form-control-feedback invalid-feedback">Fonction/Poste est requis.</div>
+            }
+          </div>
+        </div>
+        <div class="mb-3 row fitem">
+          <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label id="id_lastname_label" class="d-inline word-break" for="id_lastname">
+              Contact
+            </label>
+          </div>
+          <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="text">
+            <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="ouForm.get('poste')?.invalid && ouForm.get('poste')?.touched"
+              formControlName="contact"
+              [value]="contactDisplayValue()"
+              (input)="handleInput($event)"
+              placeholder="03x xx xxx xx"
+              size="30"
+              aria-required="true"
+              maxlength="13"
+            />
+            @if(contact.invalid && (contact.dirty || contact.touched)){
+            <div class="form-control-feedback col-md-3 mr-0 pl-0 mt-1">
+              @if(contact.errors?.['required']) {
+              <p class="text-danger">Phone number is required.</p>
+              } @else if(contact.errors?.['invalidPhoneNumber']){
+              <p class="text-danger">Doit contenir 10 chiffre commançant par '03'.</p>
+              }
+            </div>
+
+            }
           </div>
         </div>
       </div>
@@ -128,7 +174,7 @@
         <div i class="mb-3 row fitem">
           <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
             <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-              Région
+              Région *
             </label>
           </div>
           <div class="col-md-9 d-flex flex-wrap align-items-start felement" data-fieldtype="select">
@@ -145,8 +191,10 @@
               <option disabled>Aucune données trouvées</option>
               }
             </select>
-            @if (ouForm.get('level2')?.touched && ouForm.get('level2')?.invalid) {
-            <p class="mt-1 text-sm invalid-feedback">Veuillez sélectionner votre région.</p>
+            @if (ouForm.get('level2')?.invalid) {
+            <div class="form-control-feedback invalid-feedback" id="id_error_firstname">
+              Veuillez sélectionner votre région.
+            </div>
             }
           </div>
         </div>
@@ -155,7 +203,7 @@
         <div i class="mb-3 row fitem">
           <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
             <label id="id_maildisplay_label" class="d-inline word-break" for="id_maildisplay">
-              District
+              District *
             </label>
           </div>
 
@@ -177,6 +225,11 @@
               </option>
               }
             </select>
+            @if (ouForm.get('level3')?.invalid) {
+            <div class="form-control-feedback invalid-feedback text-danger">
+              Veuillez sélectionner votre district.
+            </div>
+            }
           </div>
         </div>
 
@@ -244,10 +297,12 @@
           class="btn btn-primary"
           (click)="onSubmit()"
           value="Mettre à jour le profil"
+          [disabled]="ouForm.invalid || orgUnitState().loading"
         />
 
         <div class="form-control-feedback invalid-feedback" id="id_error_submitbutton"></div>
       </div>
     </form>
+    }
   </div>
 </div>
