@@ -154,11 +154,13 @@
               maxlength="13"
             />
             @if(contact.invalid && (contact.dirty || contact.touched)){
-            <div class="form-control-feedback col-md-3 mr-0 pl-0 mt-1">
+            <div class="col-md-3 mr-0 pl-0 mt-1">
               @if(contact.errors?.['required']) {
-              <p class="text-danger">Phone number is required.</p>
+              <p class="text-danger form-control-feedback">Phone number is required.</p>
               } @else if(contact.errors?.['invalidPhoneNumber']){
-              <p class="text-danger">Doit contenir 10 chiffre commançant par '03'.</p>
+              <p class="text-danger form-control-feedback">
+                Doit contenir 10 chiffre commançant par '03'.
+              </p>
               }
             </div>
 
